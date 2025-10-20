@@ -8,8 +8,10 @@ promptThree: .string "The result is: "
 .text
 main:
 
-addi  a7, zero, 4
-la, a0, promptOne
+
+
+addi  a7, zero, 4 # This part is adding Immediate which is rd = rs1 + SignExt(imm)
+la, a0, promptOne # la here is loading a0 (x10 address to the stack) and using promptOne 
 ecall
 
 
@@ -17,6 +19,15 @@ ecall
 addi a7, zero, 5
 ecall
 mv s1, a0
+
+# Now we grabbing the second value but here is the thing, I want to be able to print out the value before actually storing the value inside of a register 
+addi a7, zero 4 # TODO: Figure out how tf to check this in the register - I have la = Load Address, but not sure how loading the address will allow us to sys call it
+la, a0, promptTwo
+ecall
+
+addi a7, zero, 5
+ecall
+mv s2, a0
 
 li a7, 10
 ecall
