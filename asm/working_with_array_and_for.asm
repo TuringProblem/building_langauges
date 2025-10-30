@@ -5,7 +5,7 @@ newline: .string "\n"
 .text 
 main:
 li s0, 0 # s0 = i
-li s1, 5 # s1 = 5
+li s1, 5 # s1 =_ 5
 la s2, v # s2 = v
 
 cond:
