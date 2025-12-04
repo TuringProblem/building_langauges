@@ -1,21 +1,18 @@
     .data
-value1: .float 3.5
+value1: .float 35.0
 result: .float 0.0
 
     .text
     .globl main
 main:
 
-    # Load value1 (float) into f0
     flw      f0, value1, t0
 
     # Load immediate 7.0 into f1
-    li       t1, 0x40E00000       # IEEE-754 for 7.0
+    li       t1, 0x40E00000
     fmv.w.x  f1, t1
 
-    # Compare: if (value1 < 7.0)
     flt.s    t2, f0, f1            # t2 = 1 if f0 < f1
-
     beq      t2, x0, ELSE         # if t2==0 go to ELSE
 
 THEN:
@@ -30,7 +27,7 @@ ELSE:
     fsw      f2, result, t0
 
 END:
-    # Print result (RARs simulator uses print float syscall)
+    
     flw      f10, result, t0
     li       a7, 2                # syscall: print float
     ecall
