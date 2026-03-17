@@ -26,7 +26,6 @@ function gnfaToRegex(base: Matrix): Regex {
 
 /**
  * This is the Helping functions that hold true under DFA, NFA, GNFA, RE, etc... Rememeber, that DFA <=> NFA <=> GNFA <=> RE.
- * 
  */
 
 const union = (a: Regex, b: Regex) => {
@@ -35,7 +34,7 @@ const union = (a: Regex, b: Regex) => {
   return `(${a}|${b})`;
 }
 
-const concat = (...parts: Regex[]): Regex  => parts.filter((x) => x !== "").join("");
+const concat = (...parts: Regex[]): Regex => parts.filter((x) => x !== "").join("");
 
 const star = (a: Regex): Regex => {
   if (a === "" || a === "ε") return "ε";

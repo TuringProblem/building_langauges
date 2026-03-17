@@ -1,0 +1,833 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{mathtools}
+
+\geometry{margin=1in}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{definition}
+\newtheorem{solution}{Solution}
+
+\title{DS3000 Homework 4: Span, Rank, and Misunderstandings \\ \large Solutions}
+\author{Andrew Wellington}
+\date{NEUID: 003159728}
+
+\begin{document}
+
+\maketitle
+
+\section*{Part A: Building Understanding from Linear Dependence and Span}
+
+\subsection*{A1. Designing a Life Path with Limited Resources}
+
+Given strategy vectors:
+\[
+s_1 = \begin{pmatrix} 0 \\ 2 \\ -1 \\ 0 \end{pmatrix}, \quad
+s_2 = \begin{pmatrix} 0 \\ 1 \\ 2 \\ -1 \end{pmatrix}, \quad
+s_3 = \begin{pmatrix} 2 \\ 5 \\ 0 \\ -1 \end{pmatrix}
+\]
+
+Goal vectors:
+\[
+g_1 = \begin{pmatrix} 8 \\ 27 \\ -1 \\ -5 \end{pmatrix}, \quad
+g_2 = \begin{pmatrix} 6 \\ 28 \\ 16 \\ 18 \end{pmatrix}, \quad
+g_3 = \begin{pmatrix} 2 \\ 6 \\ 2 \\ -2 \end{pmatrix}, \quad
+g_4 = \begin{pmatrix} 2 \\ 16 \\ 7 \\ 0 \end{pmatrix}
+\]
+
+\subsubsection*{Part (a): Which goals are possible?}
+
+\begin{proposition}
+A goal $g_i$ is achievable $\iff$ the augmented system $[S \mid g_i]$ is consistent, where $S = [s_1 \mid s_2 \mid s_3]$.
+\end{proposition}
+
+\begin{proof}[Solution for $g_1$: Graduate School Success]
+We seek $\alpha_1, \alpha_2, \alpha_3 \in \mathbb{R}$ such that $\alpha_1 s_1 + \alpha_2 s_2 + \alpha_3 s_3 = g_1$.
+
+\textbf{1:} Form augmented matrix
+\[
+[S \mid g_1] = \left[\begin{array}{ccc|c}
+0 & 0 & 2 & 8 \\
+2 & 1 & 5 & 27 \\
+-1 & 2 & 0 & -1 \\
+0 & -1 & -1 & -5
+\end{array}\right]
+\]
+
+\textbf{2:} $R_1 \leftrightarrow R_2$
+\[
+\left[\begin{array}{ccc|c}
+2 & 1 & 5 & 27 \\
+0 & 0 & 2 & 8 \\
+-1 & 2 & 0 & -1 \\
+0 & -1 & -1 & -5
+\end{array}\right]
+\]
+
+\textbf{3:} $R_3 \to R_3 + \frac{1}{2}R_1$
+\[
+\left[\begin{array}{ccc|c}
+2 & 1 & 5 & 27 \\
+0 & 0 & 2 & 8 \\
+0 & \frac{5}{2} & \frac{5}{2} & \frac{25}{2} \\
+0 & -1 & -1 & -5
+\end{array}\right]
+\]
+
+\textbf{4:} $R_2 \leftrightarrow R_3$
+\[
+\left[\begin{array}{ccc|c}
+2 & 1 & 5 & 27 \\
+0 & \frac{5}{2} & \frac{5}{2} & \frac{25}{2} \\
+0 & 0 & 2 & 8 \\
+0 & -1 & -1 & -5
+\end{array}\right]
+\]
+
+\textbf{5:} $R_4 \to R_4 + \frac{2}{5}R_2$
+\[
+R_4 \to R_4 + \frac{2}{5}\left[0, \frac{5}{2}, \frac{5}{2}, \frac{25}{2}\right] = \left[0, 0, 0, 0\right]
+\]
+\[
+\left[\begin{array}{ccc|c}
+2 & 1 & 5 & 27 \\
+0 & \frac{5}{2} & \frac{5}{2} & \frac{25}{2} \\
+0 & 0 & 2 & 8 \\
+0 & 0 & 0 & 0
+\end{array}\right]
+\]
+
+$\therefore$ System is consistent $\implies g_1$ is achievable.
+
+\textbf{Back-substitution:}
+\begin{align*}
+\text{Row 3: } 2\alpha_3 &= 8 \implies \alpha_3 = 4 \\
+\text{Row 2: } \frac{5}{2}\alpha_2 + \frac{5}{2}(4) &= \frac{25}{2} \implies \alpha_2 = 1 \\
+\text{Row 1: } 2\alpha_1 + 1(1) + 5(4) &= 27 \implies \alpha_1 = 8
+\end{align*}
+
+\[
+\boxed{g_1 \text{ is achievable with } \alpha = (8, 1, 4)^T}
+\]
+\end{proof}
+
+\begin{proof}[Solution for $g_2$: Financial Independence]
+
+\textbf{1:} Form augmented matrix
+\[
+[S \mid g_2] = \left[\begin{array}{ccc|c}
+0 & 0 & 2 & 6 \\
+2 & 1 & 5 & 28 \\
+-1 & 2 & 0 & 16 \\
+0 & -1 & -1 & 18
+\end{array}\right]
+\]
+
+\textbf{2:} $R_1 \leftrightarrow R_2$
+\[
+\left[\begin{array}{ccc|c}
+2 & 1 & 5 & 28 \\
+0 & 0 & 2 & 6 \\
+-1 & 2 & 0 & 16 \\
+0 & -1 & -1 & 18
+\end{array}\right]
+\]
+
+\textbf{3:} $R_3 \to R_3 + \frac{1}{2}R_1$
+\[
+\left[\begin{array}{ccc|c}
+2 & 1 & 5 & 28 \\
+0 & 0 & 2 & 6 \\
+0 & \frac{5}{2} & \frac{5}{2} & 30 \\
+0 & -1 & -1 & 18
+\end{array}\right]
+\]
+
+\textbf{4:} $R_2 \leftrightarrow R_3$
+\[
+\left[\begin{array}{ccc|c}
+2 & 1 & 5 & 28 \\
+0 & \frac{5}{2} & \frac{5}{2} & 30 \\
+0 & 0 & 2 & 6 \\
+0 & -1 & -1 & 18
+\end{array}\right]
+\]
+
+\textbf{5:} $R_4 \to R_4 + \frac{2}{5}R_2$
+\[
+R_4 \to R_4 + \frac{2}{5}\left[0, \frac{5}{2}, \frac{5}{2}, 30\right] = \left[0, 0, 0, 30\right]
+\]
+\[
+\left[\begin{array}{ccc|c}
+2 & 1 & 5 & 28 \\
+0 & \frac{5}{2} & \frac{5}{2} & 30 \\
+0 & 0 & 2 & 6 \\
+0 & 0 & 0 & 30
+\end{array}\right]
+\]
+
+$\therefore$ Last row gives $0 = 30$ (contradiction)
+
+\[
+\boxed{g_2 \text{ is NOT achievable}}
+\]
+\end{proof}
+
+\begin{proof}[Solution for $g_3$: Balanced Lifestyle]
+
+\textbf{1:} Form augmented matrix
+\[
+[S \mid g_3] = \left[\begin{array}{ccc|c}
+0 & 0 & 2 & 2 \\
+2 & 1 & 5 & 6 \\
+-1 & 2 & 0 & 2 \\
+0 & -1 & -1 & -2
+\end{array}\right]
+\]
+
+\textbf{2:} $R_1 \leftrightarrow R_2$
+\[
+\left[\begin{array}{ccc|c}
+2 & 1 & 5 & 6 \\
+0 & 0 & 2 & 2 \\
+-1 & 2 & 0 & 2 \\
+0 & -1 & -1 & -2
+\end{array}\right]
+\]
+
+\textbf{3:} $R_3 \to R_3 + \frac{1}{2}R_1$
+\[
+\left[\begin{array}{ccc|c}
+2 & 1 & 5 & 6 \\
+0 & 0 & 2 & 2 \\
+0 & \frac{5}{2} & \frac{5}{2} & 5 \\
+0 & -1 & -1 & -2
+\end{array}\right]
+\]
+
+\textbf{4:} $R_2 \leftrightarrow R_3$
+\[
+\left[\begin{array}{ccc|c}
+2 & 1 & 5 & 6 \\
+0 & \frac{5}{2} & \frac{5}{2} & 5 \\
+0 & 0 & 2 & 2 \\
+0 & -1 & -1 & -2
+\end{array}\right]
+\]
+
+\textbf{5:} $R_4 \to R_4 + \frac{2}{5}R_2$
+\[
+R_4 \to R_4 + \frac{2}{5}\left[0, \frac{5}{2}, \frac{5}{2}, 5\right] = \left[0, 0, 0, 0\right]
+\]
+\[
+\left[\begin{array}{ccc|c}
+2 & 1 & 5 & 6 \\
+0 & \frac{5}{2} & \frac{5}{2} & 5 \\
+0 & 0 & 2 & 2 \\
+0 & 0 & 0 & 0
+\end{array}\right]
+\]
+
+$\therefore$ System is consistent $\implies g_3$ is achievable.
+
+\textbf{Back-substitution:}
+\begin{align*}
+\text{Row 3: } 2\alpha_3 &= 2 \implies \alpha_3 = 1 \\
+\text{Row 2: } \frac{5}{2}\alpha_2 + \frac{5}{2}(1) &= 5 \implies \alpha_2 = 0 \\
+\text{Row 1: } 2\alpha_1 + 1(0) + 5(1) &= 6 \implies \alpha_1 = \frac{1}{2}
+\end{align*}
+
+\[
+\boxed{g_3 \text{ is achievable with } \alpha = \left(\frac{1}{2}, 0, 1\right)^T}
+\]
+\end{proof}
+
+\begin{proof}[Solution for $g_4$: Finding Life Partner]
+
+\textbf{1:} Form augmented matrix
+\[
+[S \mid g_4] = \left[\begin{array}{ccc|c}
+0 & 0 & 2 & 2 \\
+2 & 1 & 5 & 16 \\
+-1 & 2 & 0 & 7 \\
+0 & -1 & -1 & 0
+\end{array}\right]
+\]
+
+\textbf{2:} $R_1 \leftrightarrow R_2$
+\[
+\left[\begin{array}{ccc|c}
+2 & 1 & 5 & 16 \\
+0 & 0 & 2 & 2 \\
+-1 & 2 & 0 & 7 \\
+0 & -1 & -1 & 0
+\end{array}\right]
+\]
+
+\textbf{3:} $R_3 \to R_3 + \frac{1}{2}R_1$
+\[
+\left[\begin{array}{ccc|c}
+2 & 1 & 5 & 16 \\
+0 & 0 & 2 & 2 \\
+0 & \frac{5}{2} & \frac{5}{2} & 15 \\
+0 & -1 & -1 & 0
+\end{array}\right]
+\]
+
+\textbf{4:} $R_2 \leftrightarrow R_3$
+\[
+\left[\begin{array}{ccc|c}
+2 & 1 & 5 & 16 \\
+0 & \frac{5}{2} & \frac{5}{2} & 15 \\
+0 & 0 & 2 & 2 \\
+0 & -1 & -1 & 0
+\end{array}\right]
+\]
+
+\textbf{5:} $R_4 \to R_4 + \frac{2}{5}R_2$
+\[
+R_4 \to R_4 + \frac{2}{5}\left[0, \frac{5}{2}, \frac{5}{2}, 15\right] = \left[0, 0, 0, 6\right]
+\]
+\[
+\left[\begin{array}{ccc|c}
+2 & 1 & 5 & 16 \\
+0 & \frac{5}{2} & \frac{5}{2} & 15 \\
+0 & 0 & 2 & 2 \\
+0 & 0 & 0 & 6
+\end{array}\right]
+\]
+
+$\therefore$ Last row gives $0 = 6$ (contradiction)
+
+\[
+\boxed{g_4 \text{ is NOT achievable}}
+\]
+\end{proof}
+
+\subsubsection*{Part (b): Most and least important factors}
+
+\begin{proposition}
+For a feasible goal $g_i = \sum_{j} \alpha_j s_j$, the most important strategy corresponds to $\max_j |\alpha_j|$ and the least important to $\min_j |\alpha_j|$.
+\end{proposition}
+
+\begin{solution}
+For achievable goals:
+
+\textbf{Goal $g_1$:} $\alpha = (8, 1, 4)^T$
+\begin{align*}
+&\text{Most important: } s_1 \text{ (Resilience), } |\alpha_1| = 8 \\
+&\text{Least important: } s_2 \text{ (Networking), } |\alpha_2| = 1
+\end{align*}
+
+\textbf{Goal $g_3$:} $\alpha = (1/2, 0, 1)^T$
+\begin{align*}
+&\text{Most important: } s_3 \text{ (Hard work), } |\alpha_3| = 1 \\
+&\text{Least important: } s_2 \text{ (Networking), } |\alpha_2| = 0
+\end{align*}
+
+For $g_2, g_4$: Not applicable (goals unattainable).
+\end{solution}
+
+\subsubsection*{Part (c): Graduate School with Resilience and Hard Work alone}
+
+\begin{proposition}
+$g_1 \in \text{span}\{s_1, s_3\} \iff \exists \beta_1, \beta_3 \in \mathbb{R}: \beta_1 s_1 + \beta_3 s_3 = g_1$
+\end{proposition}
+
+\begin{proof}
+Form augmented system:
+\[
+\left[\begin{array}{cc|c}
+0 & 2 & 8 \\
+2 & 5 & 27 \\
+-1 & 0 & -1 \\
+0 & -1 & -5
+\end{array}\right]
+\]
+
+From row 1: $2\beta_3 = 8 \implies \beta_3 = 4$
+
+From row 2: $2\beta_1 + 5(4) = 27 \implies \beta_1 = 3.5$
+
+Verify row 3: $-\beta_1 = -3.5 \neq -1$ (contradiction)
+
+\[
+\boxed{\text{No, } g_1 \notin \text{span}\{s_1, s_3\}}
+\]
+\end{proof}
+
+\subsubsection*{Part (d): Solution types}
+
+\begin{solution}
+Based on our analysis:
+
+\begin{itemize}
+\item \textbf{Unique solution:} $g_1, g_3$ (rank$(S) = 3$ with 3 variables)
+\item \textbf{No solution:} $g_2, g_4$ (inconsistent systems)
+\item \textbf{Infinitely many solutions:} None (would require rank$(S) <$ 3)
+\end{itemize}
+\end{solution}
+
+\subsubsection*{Part (e): Adding the missing basis}
+
+\begin{proposition}
+Let $S' = [s_1 \mid s_2 \mid s_3 \mid s_4]$ where $s_4 = \begin{pmatrix} 0 \\ 1 \\ 2 \\ 5 \end{pmatrix}$. Then $\forall i \in \{1,2,3,4\}: g_i \in \text{span}(S')$.
+\end{proposition}
+
+\begin{proof}[Solution for $g_2$ with $s_4$]
+
+\textbf{1:} Form augmented matrix
+\[
+[S' \mid g_2] = \left[\begin{array}{cccc|c}
+0 & 0 & 2 & 0 & 6 \\
+2 & 1 & 5 & 1 & 28 \\
+-1 & 2 & 0 & 2 & 16 \\
+0 & -1 & -1 & 5 & 18
+\end{array}\right]
+\]
+
+\textbf{2:} $R_1 \leftrightarrow R_2$
+\[
+\left[\begin{array}{cccc|c}
+2 & 1 & 5 & 1 & 28 \\
+0 & 0 & 2 & 0 & 6 \\
+-1 & 2 & 0 & 2 & 16 \\
+0 & -1 & -1 & 5 & 18
+\end{array}\right]
+\]
+
+\textbf{3:} $R_3 \to R_3 + \frac{1}{2}R_1$
+\[
+\left[\begin{array}{cccc|c}
+2 & 1 & 5 & 1 & 28 \\
+0 & 0 & 2 & 0 & 6 \\
+0 & \frac{5}{2} & \frac{5}{2} & \frac{5}{2} & 30 \\
+0 & -1 & -1 & 5 & 18
+\end{array}\right]
+\]
+
+\textbf{4:} $R_2 \leftrightarrow R_3$
+\[
+\left[\begin{array}{cccc|c}
+2 & 1 & 5 & 1 & 28 \\
+0 & \frac{5}{2} & \frac{5}{2} & \frac{5}{2} & 30 \\
+0 & 0 & 2 & 0 & 6 \\
+0 & -1 & -1 & 5 & 18
+\end{array}\right]
+\]
+
+\textbf{5:} $R_4 \to R_4 + \frac{2}{5}R_2$
+\[
+R_4 \to R_4 + \frac{2}{5}\left[0, \frac{5}{2}, \frac{5}{2}, \frac{5}{2}, 30\right] = \left[0, 0, 0, 6, 30\right]
+\]
+\[
+\left[\begin{array}{cccc|c}
+2 & 1 & 5 & 1 & 28 \\
+0 & \frac{5}{2} & \frac{5}{2} & \frac{5}{2} & 30 \\
+0 & 0 & 2 & 0 & 6 \\
+0 & 0 & 0 & 6 & 30
+\end{array}\right]
+\]
+
+$\therefore$ System is consistent.
+
+\textbf{Back-substitution:}
+\begin{align*}
+\text{Row 4: } 6\alpha_4 &= 30 \implies \alpha_4 = 5 \\
+\text{Row 3: } 2\alpha_3 &= 6 \implies \alpha_3 = 3 \\
+\text{Row 2: } \frac{5}{2}\alpha_2 + \frac{5}{2}(3) + \frac{5}{2}(5) &= 30 \implies \alpha_2 = 0 \\
+\text{Row 1: } 2\alpha_1 + 0 + 5(3) + 5 &= 28 \implies \alpha_1 = 4
+\end{align*}
+
+\[
+\boxed{g_2 \text{ is achievable with } \alpha = (4, 0, 3, 5)^T}
+\]
+\end{proof}
+
+\begin{proof}[Solution for $g_4$ with $s_4$]
+
+\textbf{1:} Form augmented matrix
+\[
+[S' \mid g_4] = \left[\begin{array}{cccc|c}
+0 & 0 & 2 & 0 & 2 \\
+2 & 1 & 5 & 1 & 16 \\
+-1 & 2 & 0 & 2 & 7 \\
+0 & -1 & -1 & 5 & 0
+\end{array}\right]
+\]
+
+\textbf{2:} $R_1 \leftrightarrow R_2$
+\[
+\left[\begin{array}{cccc|c}
+2 & 1 & 5 & 1 & 16 \\
+0 & 0 & 2 & 0 & 2 \\
+-1 & 2 & 0 & 2 & 7 \\
+0 & -1 & -1 & 5 & 0
+\end{array}\right]
+\]
+
+\textbf{3:} $R_3 \to R_3 + \frac{1}{2}R_1$
+\[
+\left[\begin{array}{cccc|c}
+2 & 1 & 5 & 1 & 16 \\
+0 & 0 & 2 & 0 & 2 \\
+0 & \frac{5}{2} & \frac{5}{2} & \frac{5}{2} & 15 \\
+0 & -1 & -1 & 5 & 0
+\end{array}\right]
+\]
+
+\textbf{4:} $R_2 \leftrightarrow R_3$
+\[
+\left[\begin{array}{cccc|c}
+2 & 1 & 5 & 1 & 16 \\
+0 & \frac{5}{2} & \frac{5}{2} & \frac{5}{2} & 15 \\
+0 & 0 & 2 & 0 & 2 \\
+0 & -1 & -1 & 5 & 0
+\end{array}\right]
+\]
+
+\textbf{5:} $R_4 \to R_4 + \frac{2}{5}R_2$
+\[
+R_4 \to R_4 + \frac{2}{5}\left[0, \frac{5}{2}, \frac{5}{2}, \frac{5}{2}, 15\right] = \left[0, 0, 0, 6, 6\right]
+\]
+\[
+\left[\begin{array}{cccc|c}
+2 & 1 & 5 & 1 & 16 \\
+0 & \frac{5}{2} & \frac{5}{2} & \frac{5}{2} & 15 \\
+0 & 0 & 2 & 0 & 2 \\
+0 & 0 & 0 & 6 & 6
+\end{array}\right]
+\]
+
+$\therefore$ System is consistent.
+
+\textbf{Back-substitution:}
+\begin{align*}
+\text{Row 4: } 6\alpha_4 &= 6 \implies \alpha_4 = 1 \\
+\text{Row 3: } 2\alpha_3 &= 2 \implies \alpha_3 = 1 \\
+\text{Row 2: } \frac{5}{2}\alpha_2 + \frac{5}{2}(1) + \frac{5}{2}(1) &= 15 \implies \alpha_2 = 4 \\
+\text{Row 1: } 2\alpha_1 + 4 + 5 + 1 &= 16 \implies \alpha_1 = 3
+\end{align*}
+
+\[
+\boxed{g_4 \text{ is achievable with } \alpha = (3, 4, 1, 1)^T}
+\]
+\end{proof}
+
+\begin{solution}
+With the addition of $s_4$ (Ability to handle failure), all four life goals become achievable:
+\begin{align*}
+g_1 &\in \text{span}(S') \quad \checkmark \\
+g_2 &\in \text{span}(S') \quad \checkmark \\
+g_3 &\in \text{span}(S') \quad \checkmark \\
+g_4 &\in \text{span}(S') \quad \checkmark
+\end{align*}
+\end{solution}
+
+\newpage
+\subsection*{A2. Evaluating Independence of Career Skills}
+
+Given modules:
+\[
+m_1 = \begin{pmatrix} 1 \\ 2 \\ 0 \\ 1 \end{pmatrix}, \quad
+m_2 = \begin{pmatrix} 2 \\ 4 \\ 0 \\ 2 \end{pmatrix}, \quad
+m_3 = \begin{pmatrix} 0 \\ 1 \\ 1 \\ 0 \end{pmatrix}, \quad
+m_4 = \begin{pmatrix} 1 \\ 1 \\ 0 \\ 1 \end{pmatrix}, \quad
+m_5 = \begin{pmatrix} 3 \\ 6 \\ 0 \\ 3 \end{pmatrix}, \quad
+m_6 = \begin{pmatrix} 1 \\ 3 \\ 1 \\ 1 \end{pmatrix}
+\]
+
+\subsubsection*{Part (a): Linear dependence}
+
+\begin{proposition}
+Vectors $\{m_1, \ldots, m_6\}$ are linearly dependent $\iff$ $\exists \alpha \in \mathbb{R}^6 \setminus \{0\}: M\alpha = 0$, where $M = [m_1 \mid \cdots \mid m_6]$.
+\end{proposition}
+
+\begin{proof}
+Form matrix:
+\[
+M = \begin{pmatrix}
+1 & 2 & 0 & 1 & 3 & 1 \\
+2 & 4 & 1 & 1 & 6 & 3 \\
+0 & 0 & 1 & 0 & 0 & 1 \\
+1 & 2 & 0 & 1 & 3 & 1
+\end{pmatrix}
+\]
+
+Row reduce to find null space:
+\[
+\text{RREF}(M) = \begin{pmatrix}
+1 & 2 & 0 & 0 & 3 & 0 \\
+0 & 0 & 1 & 0 & 0 & 1 \\
+0 & 0 & 0 & 1 & 0 & 1 \\
+0 & 0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+
+Free variables: $\alpha_2, \alpha_5, \alpha_6$ $\implies \dim(\text{Null}(M)) = 3 > 0$
+
+Null space basis:
+\[
+\begin{pmatrix} -2 \\ 1 \\ 0 \\ 0 \\ 0 \\ 0 \end{pmatrix}, \quad
+\begin{pmatrix} -3 \\ 0 \\ 0 \\ 0 \\ 1 \\ 0 \end{pmatrix}, \quad
+\begin{pmatrix} 0 \\ 0 \\ -1 \\ -1 \\ 0 \\ 1 \end{pmatrix}
+\]
+
+$\therefore$ Linear dependencies: $m_2 = 2m_1$, $m_5 = 3m_1$, $m_6 = m_3 + m_4$
+
+\[
+\boxed{\text{No, student does not need all classes (vectors are linearly dependent)}}
+\]
+\end{proof}
+
+\subsubsection*{Part (b): Minimum classes needed}
+
+\begin{proposition}
+The minimum number of classes equals rank$(M)$, corresponding to pivot columns.
+\end{proposition}
+
+\begin{solution}
+From RREF, pivot columns: 1, 3, 4
+
+\begin{align*}
+\text{rank}(M) &= 3 \\
+\text{Basis: } &\{m_1, m_3, m_4\}
+\end{align*}
+
+\[
+\boxed{\text{Minimum 3 classes: Coding Bootcamp, Leadership Seminar, Time Management}}
+\]
+\end{solution}
+
+\newpage
+\section*{Part B: Projection}
+
+\subsection*{B1. Minimizing Miscommunication in Relationships}
+
+Given:
+\[
+v_{\text{loyalty}} = \begin{pmatrix} 1 \\ 3 \\ 2 \\ 2 \\ 1 \end{pmatrix}, \quad
+v_{\text{trust}} = \begin{pmatrix} 0 \\ 1 \\ 4 \\ 0 \\ 0 \end{pmatrix}, \quad
+x = \begin{pmatrix} 3 \\ 10 \\ 10 \\ 6 \\ 3 \end{pmatrix}
+\]
+
+Roommate only understands $v_{\text{loyalty}}$.
+
+\subsubsection*{Part (a): What roommate hears}
+
+\begin{proposition}
+The projection of $x$ onto $v$ is $\text{proj}_v(x) = \frac{x \cdot v}{v \cdot v} v$.
+\end{proposition}
+
+\begin{proof}
+Compute inner products:
+\begin{align*}
+x \cdot v_{\text{loyalty}} &= 3 + 30 + 20 + 12 + 3 = 68 \\
+v_{\text{loyalty}} \cdot v_{\text{loyalty}} &= 1 + 9 + 4 + 4 + 1 = 19
+\end{align*}
+
+\[
+\text{proj}_{v_{\text{loyalty}}}(x) = \frac{68}{19} \begin{pmatrix} 1 \\ 3 \\ 2 \\ 2 \\ 1 \end{pmatrix} = \begin{pmatrix} 68/19 \\ 204/19 \\ 136/19 \\ 136/19 \\ 68/19 \end{pmatrix}
+\]
+
+\[
+\boxed{\text{Roommate hears: } \frac{68}{19}v_{\text{loyalty}} \approx \begin{pmatrix} 3.58 \\ 10.74 \\ 7.16 \\ 7.16 \\ 3.58 \end{pmatrix}}
+\]
+\end{proof}
+
+\subsubsection*{Part (b): Error in communication}
+
+\begin{proposition}
+The error is $\|x - \text{proj}_v(x)\|_2$.
+\end{proposition}
+
+\begin{proof}
+\begin{align*}
+\text{error vector} &= x - \text{proj}_{v_{\text{loyalty}}}(x) = \begin{pmatrix} -11/19 \\ -14/19 \\ 54/19 \\ -22/19 \\ -11/19 \end{pmatrix}
+\end{align*}
+
+\begin{align*}
+\|\text{error}\|_2 &= \sqrt{\frac{1}{19^2}(121 + 196 + 2916 + 484 + 121)} \\
+&= \frac{1}{19}\sqrt{3838} \approx 3.26
+\end{align*}
+
+\[
+\boxed{\text{Error: } \frac{\sqrt{3838}}{19} \approx 3.26}
+\]
+\end{proof}
+
+\newpage
+\subsection*{B2. Projection onto multiple basis vectors}
+
+Given:
+\[
+v_1 = \begin{pmatrix} 1 \\ 0 \\ 1 \\ 1 \end{pmatrix}, \quad
+v_2 = \begin{pmatrix} 0 \\ 1 \\ 1 \\ 0 \end{pmatrix}, \quad
+v_3 = \begin{pmatrix} 1 \\ 1 \\ 0 \\ 0 \end{pmatrix}, \quad
+v_4 = \begin{pmatrix} 0 \\ 0 \\ 1 \\ 1 \end{pmatrix}, \quad
+v_5 = \begin{pmatrix} 1 \\ -1 \\ 0 \\ 1 \end{pmatrix}, \quad
+x = \begin{pmatrix} 2 \\ 1 \\ 4 \\ 3 \end{pmatrix}
+\]
+
+\subsubsection*{Part (a): Do the 5 basis vectors span $x$?}
+
+\begin{proposition}
+$x \in \text{span}\{v_1, \ldots, v_5\} \iff$ the system $V\alpha = x$ is consistent, where $V = [v_1 \mid \cdots \mid v_5]$.
+\end{proposition}
+
+\begin{proof}
+Form augmented system:
+\[
+[V \mid x] = \left[\begin{array}{ccccc|c}
+1 & 0 & 1 & 0 & 1 & 2 \\
+0 & 1 & 1 & 0 & -1 & 1 \\
+1 & 1 & 0 & 1 & 0 & 4 \\
+1 & 0 & 0 & 1 & 1 & 3
+\end{array}\right]
+\]
+
+Row reducing confirms consistency.
+
+\[
+\boxed{\text{Yes, } x \in \text{span}\{v_1, \ldots, v_5\}}
+\]
+\end{proof}
+
+\subsubsection*{Part (b): Project $x$ onto each $v_i$}
+
+\begin{solution}
+\textbf{Projection onto $v_1$:}
+\[
+\text{proj}_{v_1}(x) = \frac{2 + 4 + 3}{3} v_1 = 3v_1 = \begin{pmatrix} 3 \\ 0 \\ 3 \\ 3 \end{pmatrix}
+\]
+
+\textbf{Projection onto $v_2$:}
+\[
+\text{proj}_{v_2}(x) = \frac{1 + 4}{2} v_2 = \frac{5}{2} v_2 = \begin{pmatrix} 0 \\ 5/2 \\ 5/2 \\ 0 \end{pmatrix}
+\]
+
+\textbf{Projection onto $v_3$:}
+\[
+\text{proj}_{v_3}(x) = \frac{2 + 1}{2} v_3 = \frac{3}{2} v_3 = \begin{pmatrix} 3/2 \\ 3/2 \\ 0 \\ 0 \end{pmatrix}
+\]
+
+\textbf{Projection onto $v_4$:}
+\[
+\text{proj}_{v_4}(x) = \frac{4 + 3}{2} v_4 = \frac{7}{2} v_4 = \begin{pmatrix} 0 \\ 0 \\ 7/2 \\ 7/2 \end{pmatrix}
+\]
+
+\textbf{Projection onto $v_5$:}
+\[
+\text{proj}_{v_5}(x) = \frac{2 - 1 + 3}{3} v_5 = \frac{4}{3} v_5 = \begin{pmatrix} 4/3 \\ -4/3 \\ 0 \\ 4/3 \end{pmatrix}
+\]
+\end{solution}
+
+\subsubsection*{Part (c): Sum of projections}
+
+\begin{proof}
+Sum all projections:
+\begin{align*}
+\sum_{i=1}^5 \text{proj}_{v_i}(x) &= \begin{pmatrix} 3 \\ 0 \\ 3 \\ 3 \end{pmatrix} + \begin{pmatrix} 0 \\ 5/2 \\ 5/2 \\ 0 \end{pmatrix} + \begin{pmatrix} 3/2 \\ 3/2 \\ 0 \\ 0 \end{pmatrix} + \begin{pmatrix} 0 \\ 0 \\ 7/2 \\ 7/2 \end{pmatrix} + \begin{pmatrix} 4/3 \\ -4/3 \\ 0 \\ 4/3 \end{pmatrix} \\
+&= \begin{pmatrix} 37/6 \\ 8/3 \\ 10 \\ 29/6 \end{pmatrix} \neq x
+\end{align*}
+
+Error:
+\[
+\left\|x - \sum_{i=1}^5 \text{proj}_{v_i}(x)\right\|_2 = \left\|\begin{pmatrix} -25/6 \\ -5/3 \\ -6 \\ -11/6 \end{pmatrix}\right\|_2 \approx 9.28
+\]
+
+\[
+\boxed{\text{No, sum} \neq x \text{ because vectors are not orthogonal}}
+\]
+\end{proof}
+
+\newpage
+\subsection*{B3. Predicting the Future through Projection}
+
+Given orthonormal basis:
+\[
+u_1 = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ 0 \\ 1 \\ 0 \end{pmatrix}, \quad
+u_2 = \frac{1}{\sqrt{2}}\begin{pmatrix} 0 \\ 1 \\ 0 \\ 1 \end{pmatrix}, \quad
+x = \begin{pmatrix} 2 \\ 1 \\ 2 \\ 1 \end{pmatrix}
+\]
+
+\subsubsection*{Part (a): Project $x$ onto $u_1$ and $u_2$}
+
+\begin{solution}
+\textbf{Projection onto $u_1$:}
+\[
+\text{proj}_{u_1}(x) = (x \cdot u_1) u_1 = \frac{1}{\sqrt{2}}(4) \cdot \frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ 0 \\ 1 \\ 0 \end{pmatrix} = \begin{pmatrix} 2 \\ 0 \\ 2 \\ 0 \end{pmatrix}
+\]
+
+\textbf{Projection onto $u_2$:}
+\[
+\text{proj}_{u_2}(x) = (x \cdot u_2) u_2 = \frac{1}{\sqrt{2}}(2) \cdot \frac{1}{\sqrt{2}}\begin{pmatrix} 0 \\ 1 \\ 0 \\ 1 \end{pmatrix} = \begin{pmatrix} 0 \\ 1 \\ 0 \\ 1 \end{pmatrix}
+\]
+\end{solution}
+
+\subsubsection*{Part (b): Sum of projections}
+
+\begin{solution}
+\[
+\text{proj}_{u_1}(x) + \text{proj}_{u_2}(x) = \begin{pmatrix} 2 \\ 0 \\ 2 \\ 0 \end{pmatrix} + \begin{pmatrix} 0 \\ 1 \\ 0 \\ 1 \end{pmatrix} = \begin{pmatrix} 2 \\ 1 \\ 2 \\ 1 \end{pmatrix} = x
+\]
+
+\[
+\boxed{\text{Predicted behavior: } x}
+\]
+\end{solution}
+
+\subsubsection*{Part (c): Error}
+
+\begin{solution}
+\[
+\text{Error} = \|x - x\|_2 = 0
+\]
+
+\[
+\boxed{\text{Error: } 0}
+\]
+\end{solution}
+
+\subsubsection*{Part (d): Why does summation work here?}
+
+\begin{proposition}
+Let $\{u_1, \ldots, u_k\}$ be an orthonormal basis for $V$. Then $\forall x \in V$:
+\[
+x = \sum_{i=1}^k (x \cdot u_i) u_i \iff \begin{cases}
+u_i \cdot u_j = 0 & \forall i \neq j \\
+\|u_i\|_2 = 1 & \forall i \\
+x \in \text{span}\{u_1, \ldots, u_k\}
+\end{cases}
+\]
+\end{proposition}
+
+\begin{proof}
+Verify the three conditions:
+
+\textbf{Orthogonality:}
+\[
+u_1 \cdot u_2 = \frac{1}{2}(0 + 0 + 0 + 0) = 0 \quad \checkmark
+\]
+
+\textbf{Normalization:}
+\[
+\|u_1\|_2 = \sqrt{\frac{1}{2}(2)} = 1, \quad \|u_2\|_2 = \sqrt{\frac{1}{2}(2)} = 1 \quad \checkmark
+\]
+
+\textbf{Span:}
+\[
+x = 2u_1 + u_2 \implies x \in \text{span}\{u_1, u_2\} \quad \checkmark
+\]
+
+\[
+\boxed{\text{All conditions satisfied} \implies \text{orthonormal basis reconstruction holds}}
+\]
+
+This explains why B3 perfectly reconstructs $x$ while B2 does not: B3 uses orthonormal vectors that span $x$, while B2 uses non-orthogonal vectors.
+\end{proof}
+
+\end{document}

@@ -1,13 +1,11 @@
 #include <stdio.h>
 
 int main() {
-  float value1 = 3.5;
-  float result = 0;
+  int *value = malloc(sizeof(int));
 
-  if (value1 < 7)
-    result = 7 + value1;
-  else
-    result = value1 / 7;
+  *value = 5;
 
-  printf("%f\n", result);   
+  printf("%d\n", *value);
+  free(value);
+  return 0;
 }
