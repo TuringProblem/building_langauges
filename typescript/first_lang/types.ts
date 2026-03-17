@@ -53,4 +53,45 @@ const term: Term = {
   }
 }
 
-console.log(evaluate(term)) // output should be 3
+const example = "succ succ succ zero"; // evaluates to 3
+
+const parsedTerm = (input: string): Term => {
+  const tokens = input.split(/\s+/).filter(Boolean);
+  let cursor = 0;
+  const consume = (): string => {
+    return tokens[cursor++];
+  };
+
+  const parseTerm = (): Term => {
+    const token = consume();
+    switch (token) {
+      case "true":
+        return { type: "true" };
+      case "false":
+        return { type: "false" };
+      case "zero":
+        return { type: "zero" };
+      case "succ":
+        return { type: "succ", t: parseTerm() };
+      case "pred":
+        return { type: "pred", t: parseTerm() };
+      case "iszero":
+        return { type: "iszero", t: parseTerm() };
+      case "if": {
+        const cond = parseTerm();
+        consume(); // "then" keyword
+        const then = parseTerm();
+        consume(); // "else" keyword
+        const els = parseTerm();
+        return { type: "if", cond, then, else: els };
+      }
+      default:
+        throw new Error(`Unexpected token: ${token}`);
+    }
+  };
+  return parseTerm();
+}
+
+const parsed_term: Term = parsedTerm(example);
+
+console.log(evaluate(parsed_term)) // output should be 3

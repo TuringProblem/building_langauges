@@ -45,4 +45,42 @@ var term = {
         }
     }
 };
-console.log((0, exports.evaluate)(term));
+var example = "succ zero"; /// this should be 1
+// TODO write a parse function to then build a syntax tree like @term
+var parsedTerm = function (input) {
+    var tokens = input.split("/\s+/").filter(Boolean);
+    var cursor = 0;
+    var consume = function () {
+        return tokens[cursor++];
+    };
+    var parseTerm = function () {
+        var token = consume();
+        switch (token) {
+            case "true":
+                return { type: "true" };
+            case "false":
+                return { type: "false" };
+            case "zero":
+                return { type: "zero" };
+            case "succ":
+                return { type: "succ", t: parseTerm() };
+            case "pred":
+                return { type: "pred", t: parseTerm() };
+            case "iszero":
+                return { type: "iszero", t: parseTerm() };
+            case "if": {
+                var cond = parseTerm();
+                consume(); // "then" keyword
+                var then = parseTerm();
+                consume(); // "else" keyword
+                var els = parseTerm();
+                return { type: "if", cond: cond, then: then, else: els };
+            }
+            default:
+                throw new Error("Unexpected token: ".concat(token));
+        }
+    };
+    return parseTerm();
+};
+var parsed_term = parsedTerm(example);
+console.log((0, exports.evaluate)(parsed_term)); // output should be 3
