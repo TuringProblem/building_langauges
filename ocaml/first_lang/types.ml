@@ -1,11 +1,5 @@
-type term =
-  | True
-  | False
-  | Zero
-  | Succ of term
-  | Pred of term
-  | IsZero of term
-  | If of term * term * term
+open Terms
+open Parser
 
 let rec evaluate = function
   | True              -> 1
@@ -15,34 +9,6 @@ let rec evaluate = function
   | Pred t            -> evaluate t - 1
   | IsZero t          -> if evaluate t = 0 then 1 else 0
   | If (cond, t, e)   -> if evaluate cond = 0 then evaluate e else evaluate t
-
-let parse input =
-  let tokens = String.split_on_char ' ' input |> List.filter (fun s -> s <> "") in
-  let tokens = Array.of_list tokens in
-
-  let cursor = ref 0 in
-  let consume () =
-    let tok = tokens.(!cursor) in
-    incr cursor; tok
-  in
-  let rec parse_term () =
-    match consume () with
-    | "true"   -> True
-    | "false"  -> False
-    | "zero"   -> Zero
-    | "succ"   -> Succ (parse_term ())
-    | "pred"   -> Pred (parse_term ())
-    | "iszero" -> IsZero (parse_term ())
-    | "if"     ->
-        let cond  = parse_term () in
-        let _then_kw = consume () in  (* "then" keyword *)
-        let t     = parse_term () in
-        let _else_kw = consume () in  (* "else" keyword *)
-        let e     = parse_term () in
-        If (cond, t, e)
-    | tok -> failwith ("Unexpected token: " ^ tok)
-  in
-  parse_term ()
 
 let () =
   print_endline "Mini language REPL. Ctrl+D to exit.";
